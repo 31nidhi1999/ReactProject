@@ -9,10 +9,13 @@ const Appointment =()=>{
   const [doctInfo,setDoctInfo] = useState(null)
  
   useEffect(() => { const fetchDocInfo = async () => { 
+    console.log(doctors)
+    console.log("doctor id :: "+docId)
     if (doctors) 
       { 
         const docInfo = doctors.find(doc => doc._id === docId); 
-        console.log('Fetched docInfo:', docInfo); setDoctInfo(docInfo);
+        console.log('Fetched docInfo:', docInfo); 
+        setDoctInfo(docInfo);
       } 
       else 
       { 
