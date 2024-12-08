@@ -11,7 +11,8 @@
 .login-container {
   width: 100%;
   justify-content: center;
-  align-items: center;
+  justify-self: center;
+
   max-width: 700px; /* Increased max-width to make the container even wider */
   background: #ffffff;
   padding: 30px; /* Increased padding for more space inside the container */
@@ -30,6 +31,7 @@ h2 .blueviolet {
 }
 
 .form-group {
+  justify-content: center;
   margin-bottom: 20px;
 }
 

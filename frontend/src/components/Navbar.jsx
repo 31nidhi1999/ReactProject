@@ -16,7 +16,22 @@ const Navbar = () => {
             <li className='py-1'>HOME</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
+
+        <NavLink to='/allhospital'> 
+            <li className='py-1'>All Hospital</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
+        </NavLink>
         
+        <NavLink to='/register'> 
+            <li className='py-1'>Resgister</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
+        </NavLink>
+
+        <NavLink to='/login'>
+            <li className='py-1'>Login</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
+        </NavLink>
+
         <NavLink to='/doctor'>
             <li className='py-1'>Doctor</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
@@ -27,11 +42,15 @@ const Navbar = () => {
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
         </NavLink>
 
-        <NavLink to='/doctors'>
+        {/* <NavLink to='/doctors'>
             <li className='py-1'>All Doctors</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
+        </NavLink> */}
 
+        <NavLink to='/userdashboard'>
+            <li className='py-1'>User Dashboard</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
+        </NavLink>
         <NavLink to='/about'>
             <li className='py-1'>About</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />

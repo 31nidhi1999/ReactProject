@@ -6,7 +6,7 @@ const Login = () => {
       <h2>
         <span className="blueviolet">Login</span> 
       </h2>
-      <form>
+      <form className='form'>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input

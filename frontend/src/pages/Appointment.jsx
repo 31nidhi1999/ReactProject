@@ -4,18 +4,19 @@ import { AppContext } from '../context/AppContext'
 
 const Appointment =()=>{
 
-  const {docId} =useParams()
+  const {docID} =useParams()
   const {doctors} = useContext(AppContext)
   const [doctInfo,setDoctInfo] = useState(null)
  
   useEffect(() => { const fetchDocInfo = async () => { 
     console.log(doctors)
-    console.log("doctor id :: "+docId)
+    console.log("doctor id :: "+docID)
     if (doctors) 
       { 
-        const docInfo = doctors.find(doc => doc._id === docId); 
+        const docInfo = doctors.find(doc => doc._id === docID); 
         console.log('Fetched docInfo:', docInfo); 
         setDoctInfo(docInfo);
+        
       } 
       else 
       { 
@@ -23,12 +24,15 @@ const Appointment =()=>{
       } 
     }; 
     fetchDocInfo(); 
-  }, [doctors, docId]);
+  }, [doctors, docID]);
 
 
   return(
     <div>
-
+       { console.log(doctInfo)}
+        <div>
+            {/* <img src={doctInfo.image} alt="" /> */}
+        </div>
     </div>
   )
 

@@ -37,9 +37,24 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
+import manipal from "./manipal.png"
+import kameneni from "./kameneni.jpg"
+import lilavati from "./lilavati.jpg"
+import sakra_world from "./sakra_world.jpg"
+import grhosp from "./grhosp.webp"
+import vishwanath from "./vishwanath.jpeg"
+import lifecare from "./lifecare.jpg"
+import parv from "./parv.webp"
 
 
 export const assets = {
+    manipal,
+    kameneni,
+    lilavati,
+    sakra_world,
+    grhosp,vishwanath,
+    lifecare,
+    parv,
     appointment_img,
     header_img,
     group_profiles,
@@ -299,3 +314,14 @@ export const doctors = [
         }
     },
 ]
+
+export const hospitals = [
+    {_id:'hos1', name: "Manipal Hospital", url: "#manipal", image: manipal },
+    { _id:'hos2',name: "Kameneni Hospital", url: "#kameneni", image: kameneni },
+    { _id:'hos3',name: "Lilavati Hospital", url: "#lilavati", image: lilavati },
+    { _id:'hos4',name: "Sakra World Hospital", url: "#sakra_world", image: sakra_world },
+    { _id:'hos5',name: "GR Hospital", url: "#grhosp", image: grhosp },
+    { _id:'hos6',name: "Vishwanath Hospital", url: "#vishwanath", image: vishwanath },
+    { _id:'hos7',name: "LifeCare Hospital", url: "#lifecare", image: lifecare },
+    { _id:'hos8',name: "Parvathee Hospital", url: "#parv", image: parv },
+  ];
