@@ -1,53 +1,47 @@
-import React from "react";
-import "./AllHospitals.css";
-import manipal from "../assets/manipal.png"
-import kameneni from "../assets/kameneni.jpg"
-import lilavati from "../assets/lilavati.jpg"
-import sakra_world from "../assets/sakra_world.jpg"
-import grhosp from "../assets/grhosp.webp"
-import vishwanath from "../assets/vishwanath.jpeg"
-import lifecare from "../assets/lifecare.jpg"
-import parv from "../assets/parv.webp"
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-const hospitals = [
-  { name: "Manipal Hospital", url: "#manipal", image: manipal },
-  { name: "Kameneni Hospital", url: "#kameneni", image: kameneni },
-  { name: "Lilavati Hospital", url: "#lilavati", image: lilavati },
-  { name: "Sakra World Hospital", url: "#sakra_world", image: sakra_world },
-  { name: "GR Hospital", url: "#grhosp", image: grhosp },
-  { name: "Vishwanath Hospital", url: "#vishwanath", image: vishwanath },
-  { name: "LifeCare Hospital", url: "#lifecare", image: lifecare },
-  { name: "Parvathee Hospital", url: "#parv", image: parv },
-];
+import { getAllHospitals } from "../service/health";
+import { assets } from "../assets/assets";
 
 const AllHospitals = () => {
   const navigate = useNavigate()
+  
+  const [hospitals, setHospitals] = useState([]);
+
+  const getAllHospitalsData = async () => {
+    try {
+        const response = await getAllHospitals();
+        setHospitals(response.data);
+    } catch (error) {  
+        console.log(error);
+        }
+    }
+
+  useEffect(() => {
+    getAllHospitalsData();
+      }, []);
   return (
-    <div className="hospital-container">
-      <h1 className="hospital-header">All Hospitals</h1>
-      <div className="hospital-grid">
-        {hospitals.map((hospital, index) => (
-          <a
-            href={hospital.url}
-            className="hospital-card"
-            key={index}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="hospital-content">
+    <div className=''>
+      <h1 className='text=3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight md:leading-tightss'>All Hospitals</h1>
+      <div className='w-3/6 grid grid-cols-auto gap-4 gay-y-6 mt-10 place-self-center'>
+        {hospitals.map((hospital) => (
+
+            <div onClick={()=>{navigate(`/doctors/${hospital.id}`);scrollTo(0,0)}} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duratio-500'>
               {/* Add hospital image */}
-              <img
-                src={hospital.image || "https://via.placeholder.com/150"} // Placeholder image
+              <img 
+                src={assets.hospitals_img || "https://via.placeholder.com/150"} // Placeholder image
                 alt={hospital.name}
-                className="hospital-image"
+                className='bg-blue-50'
               />
-              {/* Add hospital name */}
-              <h2 className="hospital-name">{hospital.name}</h2>
-              <a onClick={()=>{navigate('/doctors');scrollTo(0,0)}} className=''>Doctors</a>
-   
+              <div className="p-4">
+                {/* Add hospital name */}
+              <h2 className='text-gray-900 text-xl'>{hospital.name}</h2>
+              <h2 className='tetx-gray-600 text-sm'>{hospital.location}</h2>
+              <h2 className='tetx-gray-600 text-sm'>{hospital.contact}</h2>
+              {console.log(`Hospital ID :: ${hospital.id}`)} 
+              </div>
+              
             </div>
-          </a>
         ))}
       </div>
     </div>

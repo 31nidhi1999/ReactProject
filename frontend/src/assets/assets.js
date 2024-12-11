@@ -1,4 +1,6 @@
 import appointment_img from './appointment_img.png'
+import hospitals_img from './GeneralHospital.jpg'
+import doctor_img from './GeneralDoctor.jpg'
 import header_img from './header_img.png'
 import group_profiles from './group_profiles.png'
 import profile_pic from './profile_pic.png'
@@ -48,6 +50,8 @@ import parv from "./parv.webp"
 
 
 export const assets = {
+    doctor_img,
+    hospitals_img,
     manipal,
     kameneni,
     lilavati,
