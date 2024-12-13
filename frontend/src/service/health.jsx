@@ -1,9 +1,14 @@
 import axios from "axios";
 import { APPOINTMENT_URL, BASE_URL } from "../constants/ApiConstants";
 
+//User sigin
+export function userSignin(login){
+    return axios.post(`${BASE_URL}users/signin`,login);
+}
+
 //Hospital APIS
 export function getAllHospitals(){
-    return axios.get(`${BASE_URL}hospital`);
+    return axios.get(`${BASE_URL}hospital/active`);
 }
 
 export function addHospital(hospital){
@@ -25,7 +30,7 @@ export function addPatient(patient){
 }
 
 export function getPatientById(patientId){
-    return axios.get(`${BASE_URL}patient/${patientId}`);
+    return axios.get(`${APPOINTMENT_URL}/patient/${patientId}`);
 }
 
 //Doctor API
@@ -52,8 +57,8 @@ export function getAllAppointment(){
     return axios.get(`${APPOINTMENT_URL}`);
 }
 
-export function addAppointment(){
-    return axios.post(`${APPOINTMENT_URL}`);
+export function addAppointment(appointment){
+    return axios.post(`${APPOINTMENT_URL}`,appointment);
 }
 
 export function getAppointmentById(id){

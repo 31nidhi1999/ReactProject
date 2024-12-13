@@ -7,7 +7,7 @@ import { assets } from '../assets/assets'
 const Doctors = () => {
 
   const {hospId}=useParams()
-  
+  sessionStorage.setItem('hospId',hospId)
   const[filterDoc,setFilterDoc] = useState([])
   const navigate = useNavigate()
   const{doctors} = useContext(AppContext)

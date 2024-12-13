@@ -16,6 +16,10 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported i
 import RegistrationForm from './pages/RegistrationForm'
 import UserDashboard from './pages/UserDashboard'
 import AllHospitals from './pages/AllHospitals'
+import AddDoctor from './pages/AddDoctor'
+import AddHospital from './pages/AddHospital'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
@@ -33,12 +37,15 @@ const App = () => {
         <Route path='/doctors/:hospId' element={<Doctors/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/about' element={<About/>}/>
-        {<Route path='/contact' element={<Contact/>}/> }
+        <Route path='/contact' element={<Contact/>}/> 
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/my-appointments' element={<MyAppointments/>}/>
         <Route path='/appointment/:docID' element={<Appointment/>}/>
         <Route path='/userdashboard' element={<UserDashboard/>}/>
+        <Route path='/adddoctor' element={<AddDoctor/>}/>
+        <Route path='/addhospital' element={<AddHospital/>}/>
        </Routes>
+       <ToastContainer />
        <Footer/>
     </div>
   )

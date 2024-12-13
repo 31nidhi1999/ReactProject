@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Registration.css';
 import axios from 'axios';
 import { BASE_URL } from '../constants/ApiConstants';
+import { toast } from 'react-toastify';
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const RegistrationForm = () => {
             const response = await axios.post(`${BASE_URL}patient`,savedData,{ 
               headers: { 'Content-Type': 'application/json' } 
             });
-            alert("Registration Succesfull");
+            toast("Registration Succesfull")
             navigate("/login")
         }catch(error){
             console.error("error while sending data :",error);
