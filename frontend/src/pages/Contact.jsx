@@ -1,5 +1,5 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap
+//import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap
 import contactImage from '../assets/contact_image.png'; // Assuming the image is in assets
 
 const Contact = () => {

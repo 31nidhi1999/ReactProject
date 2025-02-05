@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { addHospital } from "../service/health";
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { AppContext3 } from "../context/AppContext3";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddHospital = () => {
+  //const { state, setState } = useContext(AppContext3);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -14,8 +20,6 @@ const AddHospital = () => {
     contact: "",
   });
 
-  const [successPopup, setSuccessPopup] = useState(false);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -24,44 +28,29 @@ const AddHospital = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleMapClick = (e) => {
+    const { lat, lng } = e.latlng;
+    setFormData({
+      ...formData,
+      location: `${lat}, ${lng}`,
+    });
+  };
+
+  const LocationMarker = () => {
+    useMapEvents({
+      click: handleMapClick,
+    });
+    return null;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    let newErrors = {};
-
-    // Validation logic
-    if (!formData.name) newErrors.name = "Hospital name is required.";
-    if (!formData.location) newErrors.location = "Location is required.";
-    if (!formData.contact) {
-      newErrors.contact = "Contact number is required.";
-    } else if (!/^\d{10}$/.test(formData.contact)) {
-      newErrors.contact = "Valid contact number is required (10 digits).";
-    }
-
-    setErrors(newErrors);
-
-    // If there are no errors, proceed with form submission and show success popup
-    if (Object.keys(newErrors).length === 0) {
-      // Here you can handle the form submission logic like sending data to an API
-      console.log("Form submitted successfully", formData);
-
-       try {
-                  const response = await addHospital(formData, {
-                    headers: { 'Content-Type': 'application/json' }
-                  });
-                 } catch (error) {
-                  console.error("Error while sending data:", error);
-                 }
-
-
-      
-      // Show success popup
-      setSuccessPopup(true);
-
-      // Hide success popup after 3 seconds
-      setTimeout(() => {
-        setSuccessPopup(false);
-      }, 3000);
+    try {
+      const response = await addHospital(formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      // Show success toast
+      toast.success("Hospital Added Successfully!");
 
       // Clear form data (optional)
       setFormData({
@@ -69,11 +58,14 @@ const AddHospital = () => {
         location: "",
         contact: "",
       });
+    } catch (error) {
+      console.error('Error while sending data:', error);
+      toast.error("Error while adding hospital.");
     }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 py-12">
+    <div className="flex justify-center items-center bg-white">
       <div className="bg-white w-full max-w-lg p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Add Hospital</h1>
 
@@ -86,7 +78,7 @@ const AddHospital = () => {
               name="name"
               type="text"
               placeholder="Enter hospital name"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.name ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:ring-blue-500`}
               value={formData.name}
               onChange={handleChange}
             />
@@ -101,12 +93,23 @@ const AddHospital = () => {
               name="location"
               type="text"
               placeholder="Enter hospital location"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.location ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.location ? 'border-red-500' : 'border-gray-300'} focus:ring-blue-500`}
               value={formData.location}
               onChange={handleChange}
             />
             {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
           </div>
+
+          {/* Map */}
+          {/* <div className="h-64 mt-4">
+            <MapContainer center={[51.505, -0.09]} zoom={13} className="h-full">
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <LocationMarker />
+            </MapContainer>
+          </div> */}
 
           {/* Contact */}
           <div>
@@ -114,9 +117,9 @@ const AddHospital = () => {
             <input
               id="contact"
               name="contact"
-              type="tel"
-              placeholder="Enter contact number"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.contact ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              type="text"
+              placeholder="Enter contact details"
+              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.contact ? 'border-red-500' : 'border-gray-300'} focus:ring-blue-500`}
               value={formData.contact}
               onChange={handleChange}
             />
@@ -124,30 +127,15 @@ const AddHospital = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-center mt-6">
+          <div>
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-blue-500 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Add Hospital
             </button>
           </div>
         </form>
-
-        {/* Success Popup */}
-        {successPopup && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <h2 className="text-xl font-semibold text-green-600">Hospital Added Successfully!</h2>
-              <button
-                onClick={() => setSuccessPopup(false)}
-                className="mt-4 py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

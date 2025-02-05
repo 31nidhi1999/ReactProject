@@ -37,7 +37,9 @@ const Doctors = () => {
                     {/* <div className='flex items-center gap-2 text-sm text-center text-green-500'>
                         <p className='w-2 h-2 bg-green-500 rounded-full'></p>
                         <p>Avaiable</p>
-                    </div> */}
+                    </div> */
+                   
+                    }
                         <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
                         <p className='tetx-gray-600 tetx-sm'>{item.speciality}</p>
                         <p className='tetx-gray-600 tetx-sm'>Year of Experience : {item.experience}</p>

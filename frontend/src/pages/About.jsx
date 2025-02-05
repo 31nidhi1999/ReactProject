@@ -1,5 +1,5 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported if not already done in App.js
+//import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported if not already done in App.js
 
 import aboutImage from "../assets/about_image.png"; // Import the image from the assets folder
 

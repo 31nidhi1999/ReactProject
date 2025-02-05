@@ -1,8 +1,50 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getDoctorById } from "../service/health";
 
 const DoctorProfile = () => {
+  const docId = 1;
+
+  const [doctors, setDoctors] = useState(null); // Initially null instead of empty string
+  const [doctorProfile, setDoctorProfile] = useState({
+    name: '',
+    specialization: '',
+    experience: ''
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Fetch doctor details
+  const getDoctorDetail = async () => {
+    try {
+      const response = await getDoctorById(docId);
+      setDoctors(response.data); // Set doctors data
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error while fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getDoctorDetail();
+  }, [docId]);
+
+  // Update doctorProfile once doctors data is fetched
+  useEffect(() => {
+    if (doctors) {
+      setDoctorProfile({
+        name: doctors.name || '',
+        specialization: doctors.specialization || '',
+        experience: doctors.experience || ''
+      });
+    }
+  }, [doctors]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDoctorProfile({
+      ...doctorProfile,
+      [name]: value,
+    });
+  };
 
   const handleUpdate = () => {
     setIsModalOpen(true);
@@ -13,7 +55,7 @@ const DoctorProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="bg-white-100 flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg max-w-lg w-full p-6">
         <div className="flex items-center space-x-4">
           <img
@@ -22,23 +64,18 @@ const DoctorProfile = () => {
             className="w-24 h-24 rounded-full border-2 border-blue-500"
           />
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">Dr. Bharat Kelkar</h2>
-            <p className="text-gray-600">Cardiologist</p>
-            <p className="text-gray-500">+91 9876543210</p>
+            <h2 className="text-2xl font-bold text-gray-800">{doctors?.name}</h2>
+            <p className="text-gray-500">{doctors?.email}</p>
           </div>
         </div>
         <div className="mt-6 space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-700">Specialization</h3>
-            <p className="text-gray-600">Heart and Vascular Diseases</p>
+            <p className="text-gray-600">{doctors?.specialization}</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-700">Experience</h3>
-            <p className="text-gray-600">10 years of experience in Cardiology</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-700">Location</h3>
-            <p className="text-gray-600">Mumbai</p>
+            <p className="text-gray-600">{doctors?.experience}</p>
           </div>
         </div>
         <button
@@ -59,24 +96,33 @@ const DoctorProfile = () => {
                 <label className="block text-gray-600 font-medium mb-1">Full Name</label>
                 <input
                   type="text"
+                  name="name"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your full name"
+                  value={doctorProfile.name}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <label className="block text-gray-600 font-medium mb-1">Specialization</label>
                 <input
                   type="text"
+                  name="specialization"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your specialization"
+                  value={doctorProfile.specialization}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <label className="block text-gray-600 font-medium mb-1">Experience</label>
                 <input
                   type="number"
+                  name="experience"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your experience (in years)"
+                  value={doctorProfile.experience}
+                  onChange={handleChange}
                 />
               </div>
               <div>

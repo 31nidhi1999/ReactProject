@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Appointment = () => {
   const { docID } = useParams();
   const navigate = useNavigate();
-  
+  console.log("selected id"+docID)
   const [isOpen, setIsModalOpen] = useState(false);
   const [doctInfo, setDoctInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
@@ -27,8 +27,9 @@ const Appointment = () => {
 
     const fetchAvailableSlots = async () => {
       try {
-        const response = await getAllAvailableTimeSlot(docID, '2024-12-13');
+        const response = await getAllAvailableTimeSlot(docID, '2024-12-20');
         setDocSlots(response.data);
+        console.log(response.data)
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +43,7 @@ const Appointment = () => {
     
     setSlotTime(item);
     setPatientDetails({
-      appointmentDate: '2024-12-13',
+      appointmentDate: '2024-12-20',
       doctor_id: docID,
       hospital_id: sessionStorage.getItem('hospId'),
       timeSlot: item,
@@ -59,7 +60,7 @@ const Appointment = () => {
       });
       console.log(response.data);
       toast("Booking Confirmed");
-      navigate("/my-appointments")
+      //navigate("/my-appointments")
     } catch (error) {
       console.error("Error while sending data:", error);
       toast.error("Booking failed");

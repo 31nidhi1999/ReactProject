@@ -30,8 +30,6 @@ const AddDoctor = () => {
     });
   };
 
-
-
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -84,7 +82,7 @@ const AddDoctor = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 py-12">
+    <div className="min-h-screen flex justify-center items-center bg-white py-6">
       <div className="bg-white w-full max-w-lg p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Add Doctor</h1>
 
