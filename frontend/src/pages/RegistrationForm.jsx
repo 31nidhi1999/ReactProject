@@ -94,7 +94,7 @@ const RegistrationForm = () => {
   return (
     <div className="flex justify-center items-center bg-white py-6">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-center text-2xl font-bold mb-4">Create an Account</h2>
+        <h2 className="text-center text-2xl font-bold mb-4">Register Patient</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && <div className="alert bg-red-100 text-red-700 p-3 rounded">{error}</div>}
 

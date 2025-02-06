@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllAppointmentByDoctorId, patchCompletedAppointmentById, patchCanceledAppointmentById } from "../service/health";
+import { Link } from "react-router-dom";
 
 const DoctorAppointment = () => {
   const doctorId = sessionStorage.getItem("pateintId"); // ✅ Fixed typo
@@ -62,10 +63,16 @@ const DoctorAppointment = () => {
           </div>
           <nav className="space-y-4">
             <ul className="list-none p-0">
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Dashboard</li>
+            <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
+                <Link to="/doctor">Doctor Profile</Link>
+              </li>
               <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Appointments</li>
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Add Doctor</li>
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Doctors List</li>
+              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
+                <Link to="/doctorinhospital">Choose Hospital</Link>
+              </li>
+              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
+                <Link to="/hospitallist">Hospital List</Link>
+              </li>
             </ul>
           </nav>
         </aside>
