@@ -23,17 +23,17 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink to='/addhospital'> 
-            <li className='py-1'>Add hospital</li>
+            <li className='py-1'>Register hospital</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
 
         <NavLink to='/adddoctor'> 
-            <li className='py-1'>Add Doctor</li>
+            <li className='py-1'>Register Doctor</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
         
         <NavLink to='/register'> 
-            <li className='py-1'>Resgister</li>
+            <li className='py-1'>Resgister Patient</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
 
@@ -42,25 +42,27 @@ const Navbar = () => {
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
         </NavLink>
 
-        <NavLink to='/doctor'>
-            <li className='py-1'>Doctor</li>
+      
+
+      {/* <NavLink to='/doc-appointment'>
+            <li className='py-1'>Doctor Appointment</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
         </NavLink>
 
         <NavLink to='/allappo'>
             <li className='py-1'>All Apointmnet</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
+        </NavLink> */}
 
         {/* <NavLink to='/doctors'>
             <li className='py-1'>All Doctors</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
         </NavLink> */}
 
-        <NavLink to='/userdashboard'>
+        {/* <NavLink to='/userdashboard'>
             <li className='py-1'>User Dashboard</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
+        </NavLink> */}
         <NavLink to='/about'>
             <li className='py-1'>About</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
@@ -78,9 +80,9 @@ const Navbar = () => {
             <img className='w-2.5' src={assets.dropdown_icon} alt="" />
             <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
               <div className='min-w-48 bg-stome-100 rounded flex flex-col gap-4 p-4'>
-                <p onClick={()=>navigate('my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
+                <p onClick={()=>navigate('userdashboard')} className='hover:text-black cursor-pointer'>My Profile</p>
                 <p onClick={()=>navigate('my-appointments')} className='hover:text-black cursor-pointer'>My Apponitments</p>
-                <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+                <p onClick={()=>navigate('/logout')} className='hover:text-black cursor-pointer'>Logout</p>
               </div>
             </div>
           </div>

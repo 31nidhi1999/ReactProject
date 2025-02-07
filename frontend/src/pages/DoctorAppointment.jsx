@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllAppointmentByDoctorId, patchCompletedAppointmentById, patchCanceledAppointmentById } from "../service/health";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DoctorAppointment = () => {
   const doctorId = sessionStorage.getItem("pateintId"); // ✅ Fixed typo
@@ -25,7 +25,7 @@ const DoctorAppointment = () => {
 
   const handleComplete = async (appointmentId) => {
     try {
-      await patchCompletedAppointmentById(appointmentId);
+      await patchCanceledAppointmentById(appointmentId);
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment.id === appointmentId ? { ...appointment, status: "COMPLETED" } : appointment
@@ -38,7 +38,7 @@ const DoctorAppointment = () => {
 
   const handleCancel = async (appointmentId) => {
     try {
-      await patchCanceledAppointmentById(appointmentId);
+      await patchCancelledAppointmentById(appointmentId);
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment.id === appointmentId ? { ...appointment, status: "CANCELLED" } : appointment
@@ -63,12 +63,12 @@ const DoctorAppointment = () => {
           </div>
           <nav className="space-y-4">
             <ul className="list-none p-0">
-            <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
-                <Link to="/doctor">Doctor Profile</Link>
+              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
+                <Link to="/doctor-profile">Doctor Profile</Link>
               </li>
               <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Appointments</li>
               <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
-                <Link to="/doctorinhospital">Choose Hospital</Link>
+                <Link to="/doctorinhospital">Select Hospital</Link>
               </li>
               <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
                 <Link to="/hospitallist">Hospital List</Link>
@@ -82,7 +82,9 @@ const DoctorAppointment = () => {
             <div>
               <span className="text-gray-600">Doctor</span>
             </div>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-md">Logout</button>
+            <button className="bg-indigo-600 text-white px-4 py-2 rounded-md">
+              <Link to="/logout">Logout</Link>
+            </button>
           </header>
 
           <section className="grid grid-cols-3 gap-5 my-5">

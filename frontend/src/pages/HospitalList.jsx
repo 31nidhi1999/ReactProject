@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getHospitalsByDoctorId, removeDoctorFromHospital } from '../service/health'; // Make sure these service functions are available
-
+import {getHospitalsByDoctorId,removeDoctorFromHospital} from '../service/health.jsx';
 const HospitalList = () => {
   const [hospitals, setHospitals] = useState([]);
   const doctorId = sessionStorage.getItem("pateintId");

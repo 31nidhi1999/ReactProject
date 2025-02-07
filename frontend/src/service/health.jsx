@@ -12,7 +12,15 @@ export function getAllHospitals(){
 }
 
 export function addHospital(hospital){
-    return axios.post(`${BASE_URL}hospital`,hospital);
+    const token = sessionStorage.getItem("token"); 
+    return axios.post(`${BASE_URL}hospital`,hospital,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
 }
 
 export function getDoctorByHospitalId(hospId,doctorId){
@@ -69,14 +77,66 @@ export function getAllAppointmentByHospitalId(hospId){
     return axios.get(`${APPOINTMENT_URL}/hosp/${hospId}`);
 }
 
+//doctor appointment
 export function getAllAppointmentByDoctorId(doctorId){
     return axios.get(`${APPOINTMENT_URL}/doctor/${doctorId}`);
 }
 
+//appintment complete
 export function patchCompletedAppointmentById(appointId){
     return axios.patch(`${APPOINTMENT_URL}/complete/${appointId}`);
 }
 
+
+//appintment cancel
 export function patchCanceledAppointmentById(appointId){
     return axios.patch(`${APPOINTMENT_URL}/cancle/${appointId}`);
+}
+
+
+
+export function addDoctorToHospital(hospId, doctorId) {
+    const token = sessionStorage.getItem("token");  // Retrieve stored token
+    return axios.post(
+        `${BASE_URL}hospital/${hospId}/doctor/${doctorId}`,
+        {}, // Empty body
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+}
+
+export function removeDoctorFromHospital(hospId, doctorId) {
+    const token = sessionStorage.getItem("token");  // Retrieve stored token
+    return axios.delete(
+        `${BASE_URL}hospital/${hospId}/doctor/${doctorId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+}
+
+
+export function getHospitalsByDoctorId(doctorId) {
+    return axios.get(`${BASE_URL}doctor/${doctorId}/hospital`);
+}
+
+export function getHospitalsWhereDoctorIsNotWorkingByDoctorId(doctId) {
+    const token = sessionStorage.getItem("token");  // Retrieve stored token
+    return axios.get(`${BASE_URL}hospital/${doctId}`,
+
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+    
 }
