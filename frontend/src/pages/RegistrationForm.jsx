@@ -92,8 +92,8 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white py-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+    <div className="flex justify-center items-center bg-white py-2">
+      <div className="bg-white w-full max-w-lg p-8 rounded-lg shadow-lg">
         <h2 className="text-center text-2xl font-bold mb-4">Register Patient</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && <div className="alert bg-red-100 text-red-700 p-3 rounded">{error}</div>}
@@ -113,7 +113,7 @@ const RegistrationForm = () => {
           </div>
 
           <div>
-            <label htmlFor="lastName" className="block text-gray-700 font-medium">Last Name</label>
+            <label htmlFor="lastName" className="block text-gray-900 font-medium">Last Name</label>
             <input
               type="text"
               className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"

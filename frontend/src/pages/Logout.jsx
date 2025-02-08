@@ -1,13 +1,17 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Logout = () => {
+  const{userId} = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('pateintId');
-    navigate('/login');
+    console.log(userId);
+   if(userId){
+     sessionStorage.removeItem('token');
+     sessionStorage.removeItem('pateintId');
+     navigate('/login');
+   }
   }, [navigate]);
 
   return null;

@@ -82,7 +82,7 @@ const AddDoctor = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-white py-6">
+    <div className="flex justify-center items-center bg-white py-2">
       <div className="bg-white w-full max-w-lg p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Register Doctor</h1>
 

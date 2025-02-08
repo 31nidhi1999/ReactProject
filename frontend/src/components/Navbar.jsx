@@ -22,10 +22,10 @@ const Navbar = () => {
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
 
-        <NavLink to='/addhospital'> 
+        {/* <NavLink to='/addhospital'> 
             <li className='py-1'>Register hospital</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to='/adddoctor'> 
             <li className='py-1'>Register Doctor</li>
@@ -47,12 +47,17 @@ const Navbar = () => {
       {/* <NavLink to='/doc-appointment'>
             <li className='py-1'>Doctor Appointment</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
+        </NavLink> */}
 
-        <NavLink to='/allappo'>
+        {/* <NavLink to='/admin'>
             <li className='py-1'>All Apointmnet</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
         </NavLink> */}
+
+        {/* <NavLink to='/hospital-list-admin'>
+            <li className='py-1'>Hospital List Admin</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
+        </NavLink> */}
 
         {/* <NavLink to='/doctors'>
             <li className='py-1'>All Doctors</li>
@@ -73,23 +78,8 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className='flex item-center gap-4'>
-        {
-          token
-          ?<div className='flex items-center gap-2 cursor-pointer group relative'>
-            <img className='w-8 rounded-full'src={assets.profile_pic} alt="" />
-            <img className='w-2.5' src={assets.dropdown_icon} alt="" />
-            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-              <div className='min-w-48 bg-stome-100 rounded flex flex-col gap-4 p-4'>
-                <p onClick={()=>navigate('userdashboard')} className='hover:text-black cursor-pointer'>My Profile</p>
-                <p onClick={()=>navigate('my-appointments')} className='hover:text-black cursor-pointer'>My Apponitments</p>
-                <p onClick={()=>navigate('/logout')} className='hover:text-black cursor-pointer'>Logout</p>
-              </div>
-            </div>
-          </div>
-          :<button onClick={()=>navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'>Create Account</button>
-      
-        }
-        </div>
+       
+      </div>
     </div>
   )
 }

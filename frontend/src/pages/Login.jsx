@@ -61,8 +61,10 @@ const Login = () => {
 
         if (response.data.role === 'ROLE_DOCTOR') {
           navigate('/doc-appointment');
-        } else {
+        } else if(response.data.role === 'ROLE_PATIENT') {
           navigate('/my-appointments');
+        }else{
+          navigate('/addhospital');
         }
       }
     } catch (error) {

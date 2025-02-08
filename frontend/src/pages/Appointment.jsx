@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addAppointment, getAllAvailableTimeSlot, getDoctorById } from '../service/health';
 import { assets } from '../assets/assets';
-import { toast, ToastContainer, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Appointment = () => {
   const { docID } = useParams();
   const navigate = useNavigate();
-  console.log("selected id"+docID)
+  console.log("selected id" + docID)
   const [isOpen, setIsModalOpen] = useState(false);
   const [doctInfo, setDoctInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
@@ -27,9 +27,11 @@ const Appointment = () => {
 
     const fetchAvailableSlots = async () => {
       try {
-        const response = await getAllAvailableTimeSlot(docID, '2024-12-20');
-        setDocSlots(response.data);
-        console.log(response.data)
+        const response = await getAllAvailableTimeSlot(docID, new Date().toISOString().split('T')[0]);
+        const currentTime = new Date().toTimeString().split(' ')[0];
+        const futureSlots = response.data.filter(slot => slot > currentTime);
+        setDocSlots(futureSlots);
+        console.log(futureSlots);
       } catch (error) {
         console.log(error);
       }
@@ -40,17 +42,15 @@ const Appointment = () => {
   }, [docID]);
 
   const handleUpdate = (item) => {
-    
     setSlotTime(item);
     setPatientDetails({
-      appointmentDate: '2024-12-20',
+      appointmentDate: new Date().toISOString().split('T')[0],
       doctor_id: docID,
       hospital_id: sessionStorage.getItem('hospId'),
       timeSlot: item,
       patient_id: sessionStorage.getItem('pateintId'),
     });
     setIsModalOpen(true);
-    
   };
 
   const bookAppointment = async () => {
@@ -60,7 +60,7 @@ const Appointment = () => {
       });
       console.log(response.data);
       toast("Booking Confirmed");
-      //navigate("/my-appointments")
+      navigate("/my-appointments")
     } catch (error) {
       console.error("Error while sending data:", error);
       toast.error("Booking failed");
@@ -106,15 +106,21 @@ const Appointment = () => {
             <p>Booking Slot</p>
             <div className='flex gap-2 items-center w-full overflow-x-scroll mt-4'>
               {docSlots.length > 0 ? (
-                docSlots.map((item) => (
-                  <div
-                    key={item}
-                    onClick={() => handleUpdate(item)}
-                    className={`text-sm font-light flex-shrink-0 px-5 py-2 min-w-16 rounded-full cursor-pointer text-gray-400 border border-gray-300 ${slotTime === item ? 'bg-primary text-white' : ''}`}
-                  >
-                    {tConvert(item)}
-                  </div>
-                ))
+                docSlots.map((item) => {
+                  if (!sessionStorage.getItem('token')) {
+                    //alert("Please Login to book an appointment");
+                    navigate(`/login`);
+                  }
+                  return (
+                    <div
+                      className='px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-200'
+                      key={item}
+                      onClick={() => handleUpdate(item)}
+                    >
+                      {tConvert(item)}
+                    </div>
+                  );
+                })
               ) : (
                 <p>No available slots found.</p>
               )}
@@ -133,15 +139,13 @@ const Appointment = () => {
               <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400" onClick={handleCloseModal}>
                 Cancel
               </button>
-              <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onClick={()=>{bookAppointment();handleCloseModal()}}>
+              <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onClick={() => { bookAppointment(); handleCloseModal() }}>
                 Continue
               </button>
             </div>
           </div>
         </div>
       )}
-
- 
     </div>
   );
 };

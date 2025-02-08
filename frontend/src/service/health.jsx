@@ -8,7 +8,21 @@ export function userSignin(login){
 
 //Hospital APIS
 export function getAllHospitals(){
+    const token = sessionStorage.getItem("token"); 
+    return axios.get(`${BASE_URL}hospital`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+    
+}
+
+export function getAllActiveHospitals(){
     return axios.get(`${BASE_URL}hospital/active`);
+    
 }
 
 export function addHospital(hospital){
@@ -33,6 +47,10 @@ export function getAllPatient(){
     return axios.get(`${BASE_URL}patient`);
 }
 
+export function getAllDoctor(){
+    return axios.get(`${BASE_URL}doctor`);
+}
+
 export function addPatient(patient){
     return axios.post(`${BASE_URL}patient`,patient);
 }
@@ -54,6 +72,9 @@ export function getAllDoctorByHospitalId(hospId){
     return axios.get(`${BASE_URL}doctor/hosp/${hospId}`);
 }
 
+export function updateDoctor(doctorId,doctor){
+    return axios.put(`${BASE_URL}doctor/${doctorId}`,doctor);
+}
 
 //TimeSlot API
 export function getAllAvailableTimeSlot(doctorId,date){
@@ -139,4 +160,50 @@ export function getHospitalsWhereDoctorIsNotWorkingByDoctorId(doctId) {
         }
     );
     
+}
+
+export function activateHospital(hospitalId) {
+    const token = sessionStorage.getItem("token");  // Retrieve stored token
+    return axios.patch(`${BASE_URL}hospital/activate/${hospitalId}`,
+        {}, // Empty body
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+}
+
+export function deactivateHospital(hospitalId) {  
+    const token = sessionStorage.getItem("token");  // Retrieve stored token
+    return axios.patch(`${BASE_URL}hospital/inActivate/${hospitalId}`,
+        {}, // Empty body
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Attach JWT token
+                "Content-Type": "application/json"
+            }
+        }
+    );
+}
+
+export function updatePatient(patientId, patient) {
+    const token = sessionStorage.getItem("token");
+    return axios.put(`${BASE_URL}patient/${patientId}`, patient,{
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    });
+}
+
+export function getPatientDetail(patientId, patient) {
+    //const token = sessionStorage.getItem("token");
+    return axios.get(`${BASE_URL}patient/${patientId}`, patient,{
+        // headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     "Content-Type": "application/json"
+        // }
+    });
 }

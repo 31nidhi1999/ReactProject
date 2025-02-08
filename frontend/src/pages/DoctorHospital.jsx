@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addDoctorToHospital, getHospitalsWhereDoctorIsNotWorkingByDoctorId } from '../service/health'; // Make sure these service functions are available
+import { addDoctorToHospital, getHospitalsWhereDoctorIsNotWorkingByDoctorId } from '../service/health';
+import DoctorSideBar from '../components/DoctorSideBar';
 
 const DoctorHospital = () => {
   const [hospitals, setHospitals] = useState([]);
@@ -11,7 +12,7 @@ const DoctorHospital = () => {
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
-        const doctorId = sessionStorage.getItem("pateintId"); 
+        const doctorId = sessionStorage.getItem("pateintId");
         const response = await getHospitalsWhereDoctorIsNotWorkingByDoctorId(doctorId);
         setHospitals(response.data);
       } catch (error) {
@@ -43,20 +44,40 @@ const DoctorHospital = () => {
   };
 
   return (
-    <div className="doctor-hospital">
-      <h2>Select Hospital to Provide Service</h2>
-      <select value={selectedHospital} onChange={handleHospitalChange} className='border p-2 rounded'>
-        <option value=''>Select Hospital</option>
-        {hospitals.map((hospital) => (
-          <option key={hospital.id} value={hospital.id}>
-            {hospital.name}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleProvideService} className='mt-4 p-2 bg-blue-500 text-white rounded'>
-        Provide Service
-      </button>
-      <ToastContainer />
+    <div className="flex flex-col bg-gray-100">
+      {/* Main Layout */}
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <DoctorSideBar />
+        <div className="flex-1 p-5 overflow-y-auto">
+          <header className="flex justify-between items-center bg-white p-4 border-b border-gray-200">
+            <div>
+              <span className="text-gray-600">Select Hospital</span>
+            </div>
+          </header>
+          <div className="mt-5">
+            <select
+              value={selectedHospital}
+              onChange={handleHospitalChange}
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value=''>Select Hospital</option>
+              {hospitals.map((hospital) => (
+                <option key={hospital.id} value={hospital.id}>
+                  {hospital.name}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleProvideService}
+              className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+            >
+              Provide Service
+            </button>
+          </div>
+          <ToastContainer />
+        </div>
+      </div>
     </div>
   );
 };

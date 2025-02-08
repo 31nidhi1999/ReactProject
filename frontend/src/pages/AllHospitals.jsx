@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllHospitals } from "../service/health";
+import { getAllActiveHospitals } from "../service/health";
 import { assets } from "../assets/assets";
 
 const AllHospitals = () => {
@@ -10,7 +10,7 @@ const AllHospitals = () => {
 
   const getAllHospitalsData = async () => {
     try {
-        const response = await getAllHospitals();
+        const response = await getAllActiveHospitals();
         setHospitals(response.data);
     } catch (error) {  
         console.log(error);

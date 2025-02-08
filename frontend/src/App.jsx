@@ -24,6 +24,9 @@ import DoctorAppointment from './pages/DoctorAppointment';
 import DoctorHospital from './pages/DoctorHospital';
 import HospitalList from './pages/HospitalList';
 import Logout from './pages/Logout';
+import AdminSideBar from './components/AdminSideBar';
+import HospitalListAdmin from './pages/HospitalListAdmin';
+import DoctorAdmin from './pages/DoctorAdmin';
 
 const App = () => {
   return (
@@ -35,13 +38,13 @@ const App = () => {
           <Route path='/allhospital' element={<AllHospitals />} />
           <Route path='/register' element={<RegistrationForm />} />
           <Route path='/doctor' element={<DoctorProfile />} />
-          <Route path='/allappo' element={<AllApointment />} />
+          <Route path='/admin' element={<AllApointment />} />
           <Route path='/doctors' element={<Doctors />} />
           <Route path='/doctors/:hospId' element={<Doctors />} />
           <Route path='/login' element={<Login />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
-      
+          <Route path='/doctorlist' element={<DoctorAdmin/>} />
           <Route path='/my-appointments' element={<MyAppointments />} />
           <Route path='/appointment/:docID' element={<Appointment />} />
           <Route path='/doc-appointment' element={<DoctorAppointment />} />
@@ -50,7 +53,9 @@ const App = () => {
           <Route path='/doctorinhospital' element={<DoctorHospital />} />
           <Route path='/addhospital' element={<AddHospital />} />
           <Route path='/hospitallist' element={<HospitalList />} />
-          <Route path='/logout' element={<Logout />} />
+          <Route path='/adminbar' element={<AdminSideBar />} />
+          <Route path='/logout/:userId' element={<Logout />} />
+          <Route path='/hospital-list-admin' element={<HospitalListAdmin />} />
         </Routes>
         <ToastContainer />
         <Footer />

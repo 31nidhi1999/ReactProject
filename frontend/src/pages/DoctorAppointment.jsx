@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getAllAppointmentByDoctorId, patchCompletedAppointmentById, patchCanceledAppointmentById } from "../service/health";
-import { Link, useNavigate } from "react-router-dom";
+import DoctorSideBar from "../components/DoctorSideBar";
 
 const DoctorAppointment = () => {
-  const doctorId = sessionStorage.getItem("pateintId"); // ✅ Fixed typo
-  console.log("Retrieved doctorId from sessionStorage:", doctorId); // Debugging line
-
+  const doctorId = sessionStorage.getItem("pateintId"); 
+  const [totalAppointments, setTotalApp] = useState(0);
+  const [pendingAppointments, setPendingApp] = useState(0);
+  const [completedAppointments, setCompletedApp] = useState(0);
+  const [cancelledAppointments, setCancelledApp] = useState(0);
   const [appointments, setAppointments] = useState([]);
 
   const getDoctorAppointment = async () => {
@@ -17,7 +19,11 @@ const DoctorAppointment = () => {
     try {
       const response = await getAllAppointmentByDoctorId(doctorId);
       setAppointments(response.data);
-      console.log(response.data);
+      console.log(response.data.length);
+      setTotalApp(response.data.length);
+      setPendingApp(response.data.filter((appointment) => appointment.status === "PENDING").length);
+      setCompletedApp(response.data.filter((appointment) => appointment.status === "COMPLETED").length);
+      setCancelledApp(response.data.filter((appointment) => appointment.status === "CANCELLED").length);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -25,12 +31,14 @@ const DoctorAppointment = () => {
 
   const handleComplete = async (appointmentId) => {
     try {
-      await patchCanceledAppointmentById(appointmentId);
+      await patchCompletedAppointmentById(appointmentId);
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment.id === appointmentId ? { ...appointment, status: "COMPLETED" } : appointment
         )
       );
+      setCompletedApp(completedAppointments + 1);
+      setPendingApp(pendingAppointments - 1);
     } catch (error) {
       console.error("Error while updating appointment status:", error);
     }
@@ -38,12 +46,14 @@ const DoctorAppointment = () => {
 
   const handleCancel = async (appointmentId) => {
     try {
-      await patchCancelledAppointmentById(appointmentId);
+      await patchCanceledAppointmentById(appointmentId);
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment.id === appointmentId ? { ...appointment, status: "CANCELLED" } : appointment
         )
       );
+      setCancelledApp(cancelledAppointments + 1);
+      setPendingApp(pendingAppointments - 1);
     } catch (error) {
       console.error("Error while updating appointment status:", error);
     }
@@ -56,47 +66,31 @@ const DoctorAppointment = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="flex flex-1">
-        <aside className="w-64 bg-white border-r border-gray-200 p-5">
-          <div className="text-center mb-5">
-            <h1 className="text-lg font-bold text-gray-800">Buddy HealthCare</h1>
-            <span className="text-sm text-gray-500">Dashboard Panel</span>
-          </div>
-          <nav className="space-y-4">
-            <ul className="list-none p-0">
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
-                <Link to="/doctor-profile">Doctor Profile</Link>
-              </li>
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">Appointments</li>
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
-                <Link to="/doctorinhospital">Select Hospital</Link>
-              </li>
-              <li className="text-gray-700 flex items-center gap-2 cursor-pointer">
-                <Link to="/hospitallist">Hospital List</Link>
-              </li>
-            </ul>
-          </nav>
-        </aside>
+        <DoctorSideBar /> 
 
         <div className="flex-1 p-5 overflow-y-auto">
           <header className="flex justify-between items-center bg-white p-4 border-b border-gray-200">
             <div>
-              <span className="text-gray-600">Doctor</span>
+              <span className="text-gray-600">Doctor Appointments</span>
             </div>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-md">
-              <Link to="/logout">Logout</Link>
-            </button>
           </header>
 
-          <section className="grid grid-cols-3 gap-5 my-5">
+          <section className="grid grid-cols-4 gap-5 my-5">
             <div className="bg-white p-5 text-center border border-gray-200 rounded-md">
-              <h3 className="text-2xl mb-2">{appointments.length}</h3>
+              <h3 className="text-2xl mb-2">{totalAppointments}</h3>
               <p className="text-gray-600">Appointments</p>
             </div>
             <div className="bg-white p-5 text-center border border-gray-200 rounded-md">
-              <h3 className="text-2xl mb-2">
-                {appointments.filter((app) => app.status === "Pending").length}
-              </h3>
-              <p className="text-gray-600">Pending Appointments</p>
+              <h3 className="text-2xl mb-2">{pendingAppointments}</h3>
+              <p className="text-yellow-600">Pending Appointments</p>
+            </div>
+            <div className="bg-white p-5 text-center border border-gray-200 rounded-md">
+              <h3 className="text-2xl mb-2">{completedAppointments}</h3>
+              <p className="text-green-600">Completed Appointments</p>
+            </div>
+            <div className="bg-white p-5 text-center border border-gray-200 rounded-md">
+              <h3 className="text-2xl mb-2">{cancelledAppointments}</h3>
+              <p className="text-red-600">Cancelled Appointments</p>
             </div>
           </section>
 

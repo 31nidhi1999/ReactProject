@@ -1,42 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { getDoctorById } from "../service/health";
+import { getDoctorById, updateDoctor } from "../service/health";
+import DoctorSideBar from "../components/DoctorSideBar";
+import { assets } from '../assets/assets';
 
 const DoctorProfile = () => {
-  const docId = 1;
-
-  const [doctors, setDoctors] = useState(null); // Initially null instead of empty string
+  const doctorId = sessionStorage.getItem("pateintId");
+  const [doctor, setDoctor] = useState();
   const [doctorProfile, setDoctorProfile] = useState({
     name: '',
     specialization: '',
-    experience: ''
+    experience: '',
+    email: '',
+    contact: '',
+    password: ''
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch doctor details
-  const getDoctorDetail = async () => {
-    try {
-      const response = await getDoctorById(docId);
-      setDoctors(response.data); // Set doctors data
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error while fetching data:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      if (!doctorId) {
+        console.error("Doctor ID is null. Please check if it is correctly set in sessionStorage.");
+        return;
+      }
+
+      try {
+        const response = await getDoctorById(doctorId);
+        setDoctor(response.data);
+      } catch (error) {
+        console.error("Error while fetching doctor data:", error);
+      }
+    };
+
+    fetchDoctor();
+  }, [doctorId]);
 
   useEffect(() => {
-    getDoctorDetail();
-  }, [docId]);
-
-  // Update doctorProfile once doctors data is fetched
-  useEffect(() => {
-    if (doctors) {
+    if (doctor) {
       setDoctorProfile({
-        name: doctors.name || '',
-        specialization: doctors.specialization || '',
-        experience: doctors.experience || ''
+        name: doctor.name || '',
+        specialization: doctor.specialization || '',
+        experience: doctor.experience || '',
+        email:doctor.email || '',
+        contact: doctor.contact||'',
+        password: doctor.password || ''
       });
     }
-  }, [doctors]);
+  }, [doctor]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,44 +55,63 @@ const DoctorProfile = () => {
     });
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     setIsModalOpen(true);
   };
+
+  const saveChanges = async () => {
+    try {
+      console.log(doctorProfile);
+      const response = await updateDoctor(doctorId, doctorProfile, {
+        token: sessionStorage.getItem('token'),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      console.log(response.data);
+      
+    } catch (error) {
+      console.error("Error while updating doctor data:", error);
+    }
+  }
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
   return (
-    <div className="bg-white-100 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg max-w-lg w-full p-6">
-        <div className="flex items-center space-x-4">
-          <img
-            src="https://as1.ftcdn.net/v2/jpg/02/90/56/38/1000_F_290563830_MCl0UobSKqqgV7wE8KeSOsablqJIUNCg.jpg"
-            alt="Doctor Profile"
-            className="w-24 h-24 rounded-full border-2 border-blue-500"
-          />
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">{doctors?.name}</h2>
-            <p className="text-gray-500">{doctors?.email}</p>
-          </div>
+    <div className="flex flex-col bg-gray-100 min-h-screen">
+      <div className="flex flex-1">
+        <DoctorSideBar />
+
+        <div className="flex-1 p-5 overflow-y-auto">
+          <section className="my-5">
+            <header className="flex justify-between items-center bg-white p-4 border-b border-gray-200">
+              <div>
+                <span className="text-gray-600">Doctor Profile</span>
+              </div>
+            </header>
+            <div className="bg-white w-full max-w-lg p-8 rounded-lg shadow-lg mx-auto mt-5">
+              {doctor ? (
+                <div className="profile-card">
+                  <img className='w-32 bg-indigo-50' src={assets.doctor_img} alt="Doctor" />
+                  <div className="profile-name">{doctor.name}</div>
+                  <div className="profile-info">{doctor.specialization}</div>
+                  <div className="profile-info">{doctor.experience}</div>
+                  <div className="profile-info">{doctor.email}</div>
+                  <div className="profile-info">{doctor.contact}</div>
+                  
+                  <button
+                    className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                    onClick={handleUpdate}
+                  >
+                    Update Profile
+                  </button>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+          </section>
         </div>
-        <div className="mt-6 space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-700">Specialization</h3>
-            <p className="text-gray-600">{doctors?.specialization}</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-700">Experience</h3>
-            <p className="text-gray-600">{doctors?.experience}</p>
-          </div>
-        </div>
-        <button
-          className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-          onClick={handleUpdate}
-        >
-          Update Profile
-        </button>
       </div>
 
       {/* Modal for Update Profile */}
@@ -126,11 +154,27 @@ const DoctorProfile = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-600 font-medium mb-1">Location</label>
+                <label className="block text-gray-600 font-medium mb-1">password</label>
                 <input
-                  type="text"
+                  type="password"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your location"
+                  placeholder="Enter your password"
+                />
+                </div>
+                <div>
+                <label className="block text-gray-600 font-medium mb-1">Contact</label>
+                <input
+                  type="number"
+                  className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your contact"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600 font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your email"
                 />
               </div>
               <div className="flex justify-end space-x-4">
@@ -143,7 +187,7 @@ const DoctorProfile = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                  className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" onClick={saveChanges}
                 >
                   Save Changes
                 </button>
