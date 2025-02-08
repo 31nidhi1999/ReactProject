@@ -1,0 +1,66 @@
+/* Set full-page background */
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of viewport */
+  font-family: Arial, sans-serif;
+  background: url("../assets/otp_background.jpg") no-repeat center center;
+  background-size: cover; /* Adjusts image to cover full screen */
+}
+
+/* If image is in 'public/' folder, use this instead: */
+/* background: url("/background.jpg") no-repeat center center; */
+
+/* Styled box for "Enter OTP Here" */
+.otp-heading {
+  border: 2px solid #333;
+  padding: 15px 25px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  margin-bottom: 20px; /* Space between heading and OTP input */
+}
+
+/* Flexbox for OTP inputs */
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px; /* Space below OTP inputs */
+}
+
+/* Individual OTP input boxes */
+.otp-box {
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
+  text-align: center;
+  border: 2px solid #333;
+  border-radius: 5px;
+  outline: none;
+}
+
+.otp-box:focus {
+  border-color: #007bff;
+}
+
+/* Styling for resend text */
+.resend-text {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Resend OTP link */
+.resend-link {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+}

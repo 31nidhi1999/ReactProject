@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminSideBar from "../components/AdminSideBar";
 
 const AddHospital = () => {
-  //const { state, setState } = useContext(AppContext3);
   const [formData, setFormData] = useState({
     name: "",
     location: "",

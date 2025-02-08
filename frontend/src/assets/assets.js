@@ -47,9 +47,11 @@ import grhosp from "./grhosp.webp"
 import vishwanath from "./vishwanath.jpeg"
 import lifecare from "./lifecare.jpg"
 import parv from "./parv.webp"
+import otp_background from './otp_background.jpg'
 
 
 export const assets = {
+    otp_background,
     doctor_img,
     hospitals_img,
     manipal,

@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { APPOINTMENT_URL, BASE_URL } from "../constants/ApiConstants";
 
@@ -206,4 +207,12 @@ export function getPatientDetail(patientId, patient) {
         //     "Content-Type": "application/json"
         // }
     });
+}
+
+export function sendOtp(otpbody) {
+    return axios.post(`${BASE_URL}users/sendotp`, otpbody);
+}
+
+export function verifyOtp(otpbody) {
+    return axios.post(`${BASE_URL}users/verifyotp`, otpbody);
 }

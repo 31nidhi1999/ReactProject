@@ -112,8 +112,8 @@ const Appointment = () => {
                     navigate(`/login`);
                   }
                   return (
-                    <div
-                      className='px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-200'
+                    <div 
+                      className='flex flex-col px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-200'
                       key={item}
                       onClick={() => handleUpdate(item)}
                     >

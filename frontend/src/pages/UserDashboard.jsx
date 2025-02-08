@@ -50,15 +50,6 @@ const UserDashboard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the default form submission
-
-    // Check if the form is valid
-    if (e.target.checkValidity()) {
-      alert("Profile saved successfully!");
-      console.log(profile);
-    } else {
-      // If form is not valid, trigger the HTML5 validation messages
-      e.target.reportValidity();
-    }
   };
 
   return (

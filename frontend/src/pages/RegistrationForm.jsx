@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../constants/ApiConstants';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { sendOtp } from '../service/health';
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
+  const [otpbody, setOtp] = useState({
+    email: '',
+    otp: ''
+  });
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    //gender: '',
+    gender: '',
     password: '',
     confirmPassword: '',
   });
@@ -25,6 +31,13 @@ const RegistrationForm = () => {
       ...formData,
       [name]: value,
     });
+
+    if (name === 'email') {
+      setOtp({
+        ...otpbody,
+        email: value,
+      });
+    }
   };
 
   const validateFields = () => {
@@ -77,15 +90,28 @@ const RegistrationForm = () => {
         gender: formData.gender,
         password: formData.password
       };
-
+       
+      sessionStorage.setItem("email", formData.email);
       console.log(savedData);
+      console.log(otpbody);
       try {
         const response = await axios.post(`${BASE_URL}patient`, savedData, {
           headers: { 'Content-Type': 'application/json' }
         });
-        toast("Registration Successful");
-        navigate("/login");
+        if (response.status === 201) {
+          toast.success("Registered Successfully");
+
+          const resp = await sendOtp(otpbody, {
+            headers: { 'Content-Type': 'application/json' }
+          });
+
+          console.log(resp);
+          navigate("/otp");
+        } else {
+          toast.error("Registration Failed");
+        }
       } catch (error) {
+        toast.error("Email already exists");
         console.error("Error while sending data:", error);
       }
     }
@@ -143,7 +169,7 @@ const RegistrationForm = () => {
           <div>
             <label htmlFor="phone" className="block text-gray-700 font-medium">Phone Number</label>
             <input
-              type="text"
+              type="number"
               className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
               id="phone"
               name="phone"
@@ -157,6 +183,32 @@ const RegistrationForm = () => {
               placeholder="Enter your phone number, digits only"
               required
             />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium">Gender</label>
+            <div className="mt-1 flex items-center">
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="MALE"
+                checked={formData.gender === 'MALE'}
+                onChange={handleChange}
+                className="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+              />
+              <label htmlFor="male" className="ml-2 block text-gray-700">Male</label>
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="FEMALE"
+                checked={formData.gender === 'FEMALE'}
+                onChange={handleChange}
+                className="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out ml-4"
+              />
+              <label htmlFor="female" className="ml-2 block text-gray-700">Female</label>
+            </div>
           </div>
 
           <div>
@@ -191,6 +243,7 @@ const RegistrationForm = () => {
             Register
           </button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

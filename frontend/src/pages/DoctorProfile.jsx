@@ -26,6 +26,7 @@ const DoctorProfile = () => {
       try {
         const response = await getDoctorById(doctorId);
         setDoctor(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error while fetching doctor data:", error);
       }

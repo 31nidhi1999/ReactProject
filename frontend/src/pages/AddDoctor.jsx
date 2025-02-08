@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { addDoctor } from "../service/health";
+import { sendOtp } from "../service/health";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddDoctor = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     specialization: "",
@@ -9,6 +14,11 @@ const AddDoctor = () => {
     email: "",
     password: "",
     contact: "",
+  });
+
+  const [otpbody, setOtp] = useState({
+    email: '',
+    otp: ''
   });
 
   const [errors, setErrors] = useState({
@@ -28,9 +38,17 @@ const AddDoctor = () => {
       ...formData,
       [name]: value,
     });
+
+    if (name === 'email') {
+      setOtp({
+        ...otpbody,
+        email: value,
+      });
+      sessionStorage.setItem('email', value);
+    }
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let newErrors = {};
@@ -48,18 +66,26 @@ const AddDoctor = () => {
     // If there are no errors, proceed with form submission and show success popup
     if (Object.keys(newErrors).length === 0) {
       console.log("Form submitted successfully", formData);
-      // Here you would submit the form data, e.g., send it to an API
+      try {
+        const response = await addDoctor(formData, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (response.status === 201) {
+          toast.success("Registered Successfully");
 
-      //const fillDctorInfo = async()=>{
-           try {
-            const response = await addDoctor(formData, {
-              headers: { 'Content-Type': 'application/json' }
-            });
-           } catch (error) {
-            console.error("Error while sending data:", error);
-           }
-      //}
+          const resp = await sendOtp(otpbody, {
+            headers: { 'Content-Type': 'application/json' }
+          });
 
+          console.log(resp);
+          navigate("/otp");
+        } else {
+          toast.error("Registration Failed");
+        }
+      } catch (error) {
+        toast.error("Email already exists");
+        console.error("Error while sending data:", error);
+      }
 
       // Show success popup
       setSuccessPopup(true);
@@ -129,21 +155,6 @@ const AddDoctor = () => {
               value={formData.experience}
               onChange={handleChange}
             />
-            
-            {/* <select
-              id="experience"
-              name="experience"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.experience ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
-              value={formData.experience}
-              onChange={handleChange}
-            >
-              <option value="">Select Experience</option>
-              <option value="1">1 Year</option>
-              <option value="2">2 Years</option>
-              <option value="3">3 Years</option>
-              <option value="4">4 Years</option>
-              <option value="5">5 Years</option>
-            </select> */}
             {errors.experience && <p className="text-red-500 text-xs mt-1">{errors.experience}</p>}
           </div>
 
@@ -217,6 +228,7 @@ const AddDoctor = () => {
             </div>
           </div>
         )}
+        <ToastContainer />
       </div>
     </div>
   );
