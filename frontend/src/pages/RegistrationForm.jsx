@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../constants/ApiConstants';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { sendOtp } from '../service/health';
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
-  const [otpbody, setOtp] = useState({
-    email: '',
-    otp: ''
-  });
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -19,11 +14,19 @@ const RegistrationForm = () => {
     email: '',
     phone: '',
     gender: '',
+    age: '',
     password: '',
     confirmPassword: '',
   });
 
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem("email");
+    if (storedEmail) {
+      setFormData(prevState => ({ ...prevState, email: storedEmail }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,20 +34,12 @@ const RegistrationForm = () => {
       ...formData,
       [name]: value,
     });
-
-    if (name === 'email') {
-      setOtp({
-        ...otpbody,
-        email: value,
-      });
-    }
   };
 
   const validateFields = () => {
     const nameRegex = /^[A-Za-z]+$/;
     const phoneRegex = /^[0-9]{10}$/;
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#@$*]).{5,20}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#@$*]).{5,20}$/;
 
     if (!nameRegex.test(formData.firstName)) {
       setError('First name must contain only letters and not be empty.');
@@ -62,9 +57,7 @@ const RegistrationForm = () => {
     }
 
     if (!passwordRegex.test(formData.password)) {
-      setError(
-        'Password must be 5-20 characters long, contain at least one digit, one lowercase letter, one uppercase letter, and one special character (#@$*).'
-      );
+      setError('Password must be 5-20 characters long, contain at least one digit, one lowercase letter, one uppercase letter, and one special character (#@$*).');
       return false;
     }
 
@@ -88,30 +81,22 @@ const RegistrationForm = () => {
         email: formData.email,
         phone: formData.phone,
         gender: formData.gender,
-        password: formData.password
+        age: formData.age,
+        password: formData.password,
       };
-       
-      sessionStorage.setItem("email", formData.email);
+
       console.log(savedData);
-      console.log(otpbody);
       try {
         const response = await axios.post(`${BASE_URL}patient`, savedData, {
           headers: { 'Content-Type': 'application/json' }
         });
         if (response.status === 201) {
           toast.success("Registered Successfully");
-
-          const resp = await sendOtp(otpbody, {
-            headers: { 'Content-Type': 'application/json' }
-          });
-
-          console.log(resp);
-          navigate("/otp");
+          navigate("/login");
         } else {
           toast.error("Registration Failed");
         }
       } catch (error) {
-        toast.error("Email already exists");
         console.error("Error while sending data:", error);
       }
     }
@@ -160,9 +145,7 @@ const RegistrationForm = () => {
               id="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email address"
-              required
+              disabled
             />
           </div>
 
@@ -175,73 +158,37 @@ const RegistrationForm = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              onKeyPress={(e) => {
-                if (!/[0-9]/.test(e.key)) {
-                  e.preventDefault();
-                }
-              }}
               placeholder="Enter your phone number, digits only"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium">Gender</label>
+            <label htmlFor="gender" className="block text-gray-700 font-medium">Gender</label>
             <div className="mt-1 flex items-center">
-              <input
-                type="radio"
-                id="male"
-                name="gender"
-                value="MALE"
-                checked={formData.gender === 'MALE'}
-                onChange={handleChange}
-                className="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-              />
+              <input type="radio" id="male" name="gender" value="MALE" checked={formData.gender === 'MALE'} onChange={handleChange} />
               <label htmlFor="male" className="ml-2 block text-gray-700">Male</label>
-              <input
-                type="radio"
-                id="female"
-                name="gender"
-                value="FEMALE"
-                checked={formData.gender === 'FEMALE'}
-                onChange={handleChange}
-                className="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out ml-4"
-              />
+              <input type="radio" id="female" name="gender" value="FEMALE" checked={formData.gender === 'FEMALE'} onChange={handleChange} className="ml-4" />
               <label htmlFor="female" className="ml-2 block text-gray-700">Female</label>
             </div>
           </div>
 
           <div>
+            <label htmlFor="age" className="block text-gray-700 font-medium">Age</label>
+            <input type="number" id="age" name="age" value={formData.age} onChange={handleChange} className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Enter your age" required />
+          </div>
+
+          <div>
             <label htmlFor="password" className="block text-gray-700 font-medium">Password</label>
-            <input
-              type="password"
-              className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter a strong password"
-              required
-            />
+            <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Enter a strong password" required />
           </div>
 
           <div>
             <label htmlFor="confirmPassword" className="block text-gray-700 font-medium">Confirm Password</label>
-            <input
-              type="password"
-              className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Re-enter your password"
-              required
-            />
+            <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Re-enter your password" required />
           </div>
 
-          <button type="submit" className="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
-            Register
-          </button>
+          <button type="submit" className="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Register</button>
         </form>
         <ToastContainer />
       </div>

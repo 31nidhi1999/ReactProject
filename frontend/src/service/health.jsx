@@ -216,3 +216,16 @@ export function sendOtp(otpbody) {
 export function verifyOtp(otpbody) {
     return axios.post(`${BASE_URL}users/verifyotp`, otpbody);
 }
+
+
+
+export function VerifyEmail(email) {
+    console.log("Email being sent:", email); // Check the value
+
+    if (typeof email !== "string") {
+        throw new Error("Email must be a string! Instead got: " + typeof email);
+    }
+
+    return axios.get(`${BASE_URL}users/verifyemail/${encodeURIComponent(email)}`);
+}
+

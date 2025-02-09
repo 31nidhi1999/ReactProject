@@ -27,13 +27,18 @@ const Navbar = () => {
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink> */}
 
-        <NavLink to='/adddoctor'> 
+        {/* <NavLink to='/adddoctor'> 
             <li className='py-1'>Register Doctor</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
         
         <NavLink to='/register'> 
             <li className='py-1'>Resgister Patient</li>
+            <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
+        </NavLink> */}
+
+        <NavLink to='/verify'> 
+            <li className='py-1'>Register</li>
             <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden'/>
         </NavLink>
 

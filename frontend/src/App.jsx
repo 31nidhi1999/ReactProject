@@ -27,7 +27,8 @@ import Logout from './pages/Logout';
 import AdminSideBar from './components/AdminSideBar';
 import HospitalListAdmin from './pages/HospitalListAdmin';
 import DoctorAdmin from './pages/DoctorAdmin';
-import OtpVerification from './pages/OtpVerification';
+import VerifyEmail from './pages/verifyemail';
+import RegisterUsers from './pages/RegisterUsers';
 
 const App = () => {
   return (
@@ -57,7 +58,9 @@ const App = () => {
           <Route path='/adminbar' element={<AdminSideBar />} />
           <Route path='/logout/:userId' element={<Logout />} />
           <Route path='/hospital-list-admin' element={<HospitalListAdmin />} />
-          <Route path='/otp' element={<OtpVerification />} />
+          <Route path='/verify' element={<VerifyEmail />} />
+          
+          <Route path='/registeruser' element={<RegisterUsers/>}/>
         </Routes>
         <ToastContainer />
         <Footer />

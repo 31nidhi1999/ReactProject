@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { addDoctor } from "../service/health";
-import { sendOtp } from "../service/health";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddDoctor = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     specialization: "",
@@ -14,11 +14,6 @@ const AddDoctor = () => {
     email: "",
     password: "",
     contact: "",
-  });
-
-  const [otpbody, setOtp] = useState({
-    email: '',
-    otp: ''
   });
 
   const [errors, setErrors] = useState({
@@ -30,7 +25,16 @@ const AddDoctor = () => {
     contact: "",
   });
 
-  const [successPopup, setSuccessPopup] = useState(false); // State for success popup
+  const [successPopup, setSuccessPopup] = useState(false);
+
+  // Set email from sessionStorage on component mount
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem("email") || "";
+    setFormData((prevData) => ({
+      ...prevData,
+      email: storedEmail
+    }));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +43,8 @@ const AddDoctor = () => {
       [name]: value,
     });
 
-    if (name === 'email') {
-      setOtp({
-        ...otpbody,
-        email: value,
-      });
-      sessionStorage.setItem('email', value);
+    if (name === "email") {
+      sessionStorage.setItem("email", value); // Store email in sessionStorage when changed
     }
   };
 
@@ -63,47 +63,24 @@ const AddDoctor = () => {
 
     setErrors(newErrors);
 
-    // If there are no errors, proceed with form submission and show success popup
     if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted successfully", formData);
       try {
         const response = await addDoctor(formData, {
           headers: { 'Content-Type': 'application/json' }
         });
+
         if (response.status === 201) {
           toast.success("Registered Successfully");
-
-          const resp = await sendOtp(otpbody, {
-            headers: { 'Content-Type': 'application/json' }
-          });
-
-          console.log(resp);
-          navigate("/otp");
+          navigate("/login");
         } else {
           toast.error("Registration Failed");
         }
       } catch (error) {
-        toast.error("Email already exists");
         console.error("Error while sending data:", error);
       }
 
-      // Show success popup
       setSuccessPopup(true);
-
-      // Hide success popup after 3 seconds
-      setTimeout(() => {
-        setSuccessPopup(false);
-      }, 3000);
-
-      // Optionally, clear the form data after successful submission
-      setFormData({
-        name: "",
-        specialization: "",
-        experience: "",
-        email: "",
-        password: "",
-        contact: "",
-      });
+      setTimeout(() => setSuccessPopup(false), 3000);
     }
   };
 
@@ -121,7 +98,7 @@ const AddDoctor = () => {
               name="name"
               type="text"
               placeholder="Enter doctor's name"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.name ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.name ? "border-red-500" : "border-gray-300"}`}
               value={formData.name}
               onChange={handleChange}
             />
@@ -136,7 +113,7 @@ const AddDoctor = () => {
               name="specialization"
               type="text"
               placeholder="Enter specialization"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.specialization ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.specialization ? "border-red-500" : "border-gray-300"}`}
               value={formData.specialization}
               onChange={handleChange}
             />
@@ -150,8 +127,8 @@ const AddDoctor = () => {
               id="experience"
               name="experience"
               type="number"
-              placeholder="Enter Year Of experience"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.experience ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              placeholder="Enter Years Of Experience"
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.experience ? "border-red-500" : "border-gray-300"}`}
               value={formData.experience}
               onChange={handleChange}
             />
@@ -166,7 +143,7 @@ const AddDoctor = () => {
               name="email"
               type="email"
               placeholder="Enter doctor's email"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.email ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.email ? "border-red-500" : "border-gray-300"}`}
               value={formData.email}
               onChange={handleChange}
             />
@@ -181,7 +158,7 @@ const AddDoctor = () => {
               name="password"
               type="password"
               placeholder="Enter password"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.password ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.password ? "border-red-500" : "border-gray-300"}`}
               value={formData.password}
               onChange={handleChange}
             />
@@ -196,7 +173,7 @@ const AddDoctor = () => {
               name="contact"
               type="tel"
               placeholder="Enter contact number"
-              className={`w-full mt-2 p-3 border-2 rounded-md focus:outline-none focus:ring-2 ${errors.contact ? "border-red-500" : "border-gray-300"} focus:ring-blue-500`}
+              className={`w-full mt-2 p-3 border-2 rounded-md ${errors.contact ? "border-red-500" : "border-gray-300"}`}
               value={formData.contact}
               onChange={handleChange}
             />
@@ -207,7 +184,7 @@ const AddDoctor = () => {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700"
             >
               Add Doctor
             </button>
