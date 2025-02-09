@@ -2,19 +2,19 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Logout = () => {
-  const{userId} = useParams();
+  const { userId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userId);
-   if(userId){
-     sessionStorage.removeItem('token');
-     sessionStorage.removeItem('pateintId');
-     navigate('/login');
-   }
-  }, [navigate]);
+    console.log("Logging out user:", userId);
+    
+    if (userId) {
+      sessionStorage.clear();
+      navigate('/login', { replace: true }); // Prevents going back to the logout page
+    }
+  }, [userId, navigate]); // Include userId to ensure it runs correctly
 
   return null;
-}
+};
 
 export default Logout;

@@ -57,8 +57,7 @@ const Login = () => {
         const token = response.data.jwt;
         sessionStorage.setItem('pateintId', response.data.id);
         sessionStorage.setItem('token', token);
-        toast.success('Login Successful');
-
+        sessionStorage.setItem('role',response.data.role);
         if (response.data.role === 'ROLE_DOCTOR') {
           navigate('/doc-appointment');
         } else if(response.data.role === 'ROLE_PATIENT') {

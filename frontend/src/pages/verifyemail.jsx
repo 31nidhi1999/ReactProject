@@ -132,7 +132,7 @@ const VerifyEmailComponent = () => {
             />
             <button
               type="button"
-              className="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+              className="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-2"
               onClick={handleEmailVerification}
             >
               Verify Email

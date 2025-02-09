@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addAppointment, getAllAvailableTimeSlot, getDoctorById } from '../service/health';
 import { assets } from '../assets/assets';
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Appointment = () => {
@@ -146,6 +146,7 @@ const Appointment = () => {
           </div>
         </div>
       )}
+      <ToastContainer/>
     </div>
   );
 };
