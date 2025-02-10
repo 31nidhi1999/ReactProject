@@ -3,7 +3,7 @@ import { addHospital } from "../service/health";
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AppContext3 } from "../context/AppContext3";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminSideBar from "../components/AdminSideBar";
 
@@ -152,6 +152,7 @@ const AddHospital = () => {
               </form>
             </div>
           </section>
+          <ToastContainer/>
         </div>
       </div>
     </div>

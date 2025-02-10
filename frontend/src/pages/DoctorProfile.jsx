@@ -67,6 +67,10 @@ const DoctorProfile = () => {
         token: sessionStorage.getItem('token'),
         headers: { 'Content-Type': 'application/json' }
       });
+      if(response.status===200){
+        const rep = await getDoctorById(doctorId);
+        setDoctor(rep);
+      }
       console.log(response.data);
       
     } catch (error) {
@@ -154,28 +158,34 @@ const DoctorProfile = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-gray-600 font-medium mb-1">password</label>
                 <input
                   type="password"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your password"
                 />
-                </div>
+                </div> */}
                 <div>
                 <label className="block text-gray-600 font-medium mb-1">Contact</label>
                 <input
                   type="number"
+                  name="contact"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your contact"
+                  value={doctorProfile.contact}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <label className="block text-gray-600 font-medium mb-1">Email</label>
                 <input
                   type="email"
+                  name="email"
                   className="w-full border rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your email"
+                  value={doctorProfile.email}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex justify-end space-x-4">

@@ -73,8 +73,8 @@ export function getAllDoctorByHospitalId(hospId){
     return axios.get(`${BASE_URL}doctor/hosp/${hospId}`);
 }
 
-export function updateDoctor(doctorId,doctor){
-    return axios.put(`${BASE_URL}doctor/${doctorId}`,doctor);
+export function updateDoctor(doctorId,doctor,config){
+    return axios.put(`${BASE_URL}doctor/${doctorId}`,doctor,config);
 }
 
 //TimeSlot API

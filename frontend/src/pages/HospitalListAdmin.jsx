@@ -84,10 +84,10 @@ const HospitalListAdmin = () => {
                     <button
                       onClick={() => toggleHospitalStatus(hospital.id, hospital.isActive ? 'active' : 'inactive')}
                       className={`px-4 py-2 rounded-md ${
-                        hospital.isActive ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                        hospital.isActive ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
                       }`}
                     >
-                      {hospital.isActive===false ? 'Deactivate' : 'Activate'}
+                      {hospital.isActive===false ? 'Activate' : 'Deactivate'}
                     </button>
                   </div>
                 </li>

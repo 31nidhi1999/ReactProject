@@ -4,7 +4,7 @@ import { BASE_URL } from '../constants/ApiConstants';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,NavLink} from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -58,6 +58,7 @@ const Login = () => {
         sessionStorage.setItem('pateintId', response.data.id);
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('role',response.data.role);
+        sessionStorage.setItem('email',response.data.email);
         if (response.data.role === 'ROLE_DOCTOR') {
           navigate('/doc-appointment');
         } else if(response.data.role === 'ROLE_PATIENT') {
@@ -67,7 +68,7 @@ const Login = () => {
         }
       }
     } catch (error) {
-      toast.error('Login Failure');
+      toast.error('Invalid Email or Password !!!');
       console.error('Error while sending data:', error);
     }
   };
@@ -102,6 +103,11 @@ const Login = () => {
           />
         </div>
         <button className="login-btn">Login</button>
+
+        <div className="forgot-password-link">
+          <NavLink to="/verify2">Forgot Password?</NavLink>
+        </div>
+
       </form>
       <ToastContainer />
     </div>

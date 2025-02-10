@@ -108,15 +108,27 @@ const AddDoctor = () => {
           {/* Specialization */}
           <div>
             <label htmlFor="specialization" className="block text-sm font-medium text-gray-600">Specialization</label>
-            <input
+            <select
               id="specialization"
               name="specialization"
-              type="text"
-              placeholder="Enter specialization"
               className={`w-full mt-2 p-3 border-2 rounded-md ${errors.specialization ? "border-red-500" : "border-gray-300"}`}
               value={formData.specialization}
               onChange={handleChange}
-            />
+            >
+              <option value="">Select Specialization</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Endocrinology">Endocrinology</option>
+              <option value="Gastroenterology">Gastroenterology</option>
+              <option value="Neurology">Neurology</option>
+              <option value="Oncology">Oncology</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="Psychiatry">Psychiatry</option>
+              <option value="Radiology">Radiology</option>
+              <option value="Surgery">Surgery</option>
+              <option value="Urology">Urology</option>
+            </select>
             {errors.specialization && <p className="text-red-500 text-xs mt-1">{errors.specialization}</p>}
           </div>
 
@@ -146,6 +158,8 @@ const AddDoctor = () => {
               className={`w-full mt-2 p-3 border-2 rounded-md ${errors.email ? "border-red-500" : "border-gray-300"}`}
               value={formData.email}
               onChange={handleChange}
+              readOnly
+              required
             />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>

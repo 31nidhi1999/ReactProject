@@ -29,6 +29,8 @@ import HospitalListAdmin from './pages/HospitalListAdmin';
 import DoctorAdmin from './pages/DoctorAdmin';
 import VerifyEmail from './pages/verifyemail';
 import RegisterUsers from './pages/RegisterUsers';
+import ForgetPassword from './pages/ForgetPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
   return (
@@ -58,7 +60,9 @@ const App = () => {
           <Route path='/adminbar' element={<AdminSideBar />} />
           <Route path='/logout/:userId' element={<Logout />} />
           <Route path='/hospital-list-admin' element={<HospitalListAdmin />} />
+          <Route path='/verify2' element={<ForgetPassword/>}/>
           <Route path='/verify' element={<VerifyEmail />} />
+          <Route path='/setpassword' element={<ResetPassword/>}/>
           
           <Route path='/registeruser' element={<RegisterUsers/>}/>
         </Routes>

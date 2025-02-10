@@ -15,8 +15,8 @@ const DoctorAdmin = () => {
       //const resp = await getAllActiveHospitals();
       setDoctorList(response.data);
       setDoctorCount(response.data.length);
-      setActive(response.data.filter(doctor=>doctor.user.isActive===true).length);
-      setInactive(response.data.filter(doctor=>doctor.user.isActive===false).length);
+      setActive(response.data.filter(doctor=>doctor.isActive===true).length);
+      setInactive(response.data.filter(doctor=>doctor.isActive===false).length);
       console.log(response.data);
     };
     fetchDoctorList();
@@ -66,7 +66,7 @@ const DoctorAdmin = () => {
                     
                         <td className="border px-4 py-2 text-gray-600 font-medium">{doctor.email}</td>
                         {
-                          doctor.user.isActive===true?
+                          doctor.isActive===true?
                           <td className="border px-4 py-2 text-green-600 font-medium">Active</td>:
                           <td className="border px-4 py-2 text-red-600 font-medium">Inactive</td>
                         }
